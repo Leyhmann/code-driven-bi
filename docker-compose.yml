@@ -1,0 +1,42 @@
+### Dev container ###########################################
+name: cd-bi
+
+services:
+  backend:
+    build:
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./:/var/app
+    working_dir: /var/app
+    command: npm run start:dev
+    ports:
+      - "${PUBLIC_PORT}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:17
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "${DATABASE_PUBLIC_PORT}:5432"
+    networks:
+      - backend
+
+volumes:
+  postgres:
+
+networks:
+  backend:
