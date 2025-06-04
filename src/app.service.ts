@@ -1,8 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { Kysely } from "kysely";
+import { InjectKysely } from "nestjs-kysely";
+import { DB } from "./database/schema.js";
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  constructor(@InjectKysely("system") private readonly db: Kysely<DB>,) {
+  }
+
+  async getHello(): Promise<any> {
+    return this.db.selectFrom('users').selectAll();
   }
 }
