@@ -14,15 +14,19 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test": "jest --config ./test/jest-unit.json",
+    "test:watch": "jest --config ./test/jest-unit.json --watch",
+    "test:cov": "jest --config ./test/jest-unit.json --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand --config ./test/jest-unit.json",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "generate:db": "DATABASE_URL=postgres://$DATABASE_USERNAME:$DATABASE_PASSWORD@$DATABASE_HOST/$DATABASE_NAME kysely-codegen --out-file src/database/schema.ts"
+    "generate:db": "DATABASE_URL=postgres://$DATABASE_USERNAME:$DATABASE_PASSWORD@$DATABASE_HOST/$DATABASE_NAME kysely-codegen --out-file src/database/schema.ts",
+    "migrate:make": "kysely migrate:make",
+    "migrate": "kysely migrate:latest",
+    "migrate:rollback": "kysely migrate:rollback --all"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "kysely": "^0.28.2",
@@ -50,16 +54,17 @@
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^16.0.0",
     "jest": "^29.7.0",
+    "kysely-codegen": "^0.18.5",
+    "kysely-ctl": "^0.13.1",
     "prettier": "^3.4.2",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
-    "ts-jest": "^29.2.5",
+    "ts-jest": "^29.3.4",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0",
-    "kysely-codegen": "^0.18.5"
+    "typescript-eslint": "^8.20.0"
   },
   "jest": {
     "moduleFileExtensions": [
