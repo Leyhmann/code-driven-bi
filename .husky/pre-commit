@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-docker run --rm --workdir /var/www -v ./:/var/www node:22-alpine npm run lint
+docker run --rm --workdir /var/www -v ./:/var/www node:22-alpine npm run lint:check
