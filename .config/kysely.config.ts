@@ -1,10 +1,9 @@
-import { PostgresDialect } from "kysely";
-import pg from "pg-pool";
-import { defineConfig } from "kysely-ctl";
-import { loadDatabaseConfig } from "../src/utils/load-config.js";
+import { PostgresDialect } from 'kysely';
+import pg from 'pg-pool';
+import { defineConfig } from 'kysely-ctl';
+import { loadDatabaseConfig } from '../src/utils/load-config.js';
 
 const dbConnection = loadDatabaseConfig();
-
 
 export default defineConfig({
   dialect: new PostgresDialect({
@@ -12,14 +11,14 @@ export default defineConfig({
       host: dbConnection.host,
       user: dbConnection.user,
       password: dbConnection.password,
-      database: dbConnection.database
-    })
+      database: dbConnection.database,
+    }),
   }),
   migrations: {
-    migrationFolder: "./src/database/migrations"
+    migrationFolder: './src/database/migrations',
   },
   plugins: [],
   seeds: {
-    seedFolder: "./src/database/seeds"
-  }
+    seedFolder: './src/database/seeds',
+  },
 });
