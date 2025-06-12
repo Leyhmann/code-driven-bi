@@ -8,6 +8,7 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { DEFAULT_NAMESPACE } from './constants/database.js';
 import { databaseConfig } from './config/database.config.js';
+import { UsersModule } from './users/users.module.js';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { databaseConfig } from './config/database.config.js';
         }),
       },
     ]),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
