@@ -1,5 +1,5 @@
 import { config as loadEnv } from 'dotenv';
-import { databaseConfig } from '../config/database.config.js';
+import { databaseConfig } from '../config/database.config';
 
 export const loadDatabaseConfig = () => {
   loadEnv();

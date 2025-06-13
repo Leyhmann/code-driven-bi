@@ -3,11 +3,12 @@ import { PostgresDialect } from 'kysely';
 import { ConfigModule } from '@nestjs/config';
 import pg from 'pg-pool';
 import { KyselyModule } from 'nestjs-kysely';
+import { CommandModule } from 'nestjs-command';
 import * as process from 'node:process';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { DEFAULT_NAMESPACE } from './constants/database.js';
-import { databaseConfig } from './config/database.config.js';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { DEFAULT_NAMESPACE } from './constants/database';
+import { databaseConfig } from './config/database.config';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { databaseConfig } from './config/database.config.js';
       isGlobal: true,
       load: [databaseConfig],
     }),
+    CommandModule,
     KyselyModule.forRoot([
       {
         namespace: DEFAULT_NAMESPACE,

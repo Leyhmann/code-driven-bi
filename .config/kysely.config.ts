@@ -1,7 +1,7 @@
 import { PostgresDialect } from "kysely";
 import pg from "pg-pool";
 import { defineConfig } from "kysely-ctl";
-import { loadDatabaseConfig } from "../src/utils/load-config.js";
+import { loadDatabaseConfig } from "../src/utils/load-config";
 
 const dbConnection = loadDatabaseConfig();
 
