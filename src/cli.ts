@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule, {
-    logger: false,
+    logger: ['error'], // only errors
   });
 
   try {
@@ -16,6 +16,4 @@ async function bootstrap() {
     process.exit(1);
   }
 }
-
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
 bootstrap();

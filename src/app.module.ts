@@ -6,8 +6,9 @@ import { KyselyModule } from 'nestjs-kysely';
 import { CommandModule } from 'nestjs-command';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DEFAULT_NAMESPACE } from './constants/database';
+import { DEFAULT_NAMESPACE } from './constants/database.js';
 import { databaseConfig } from './config/database.config';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -15,7 +16,6 @@ import { databaseConfig } from './config/database.config';
       isGlobal: true,
       load: [databaseConfig],
     }),
-    CommandModule,
     KyselyModule.forRootAsync({
       namespace: DEFAULT_NAMESPACE,
       inject: [ConfigService],
@@ -30,6 +30,8 @@ import { databaseConfig } from './config/database.config';
         }),
       }),
     }),
+    UsersModule,
+    CommandModule,
   ],
   controllers: [AppController],
   providers: [AppService],
