@@ -5,7 +5,7 @@
   "author": "Leyhmann",
   "private": false,
   "license": "UNLICENSED",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -36,10 +36,12 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "kysely": "^0.28.2",
-    "nestjs-kysely": "^2.0.0",
+    "nestjs-command": "^3.1.5",
+    "nestjs-kysely": "^1.2.0",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -55,6 +57,7 @@
     "@types/pg": "^8.15.4",
     "@types/pg-pool": "^2.0.6",
     "@types/supertest": "^6.0.2",
+    "@types/yargs": "^17.0.33",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",

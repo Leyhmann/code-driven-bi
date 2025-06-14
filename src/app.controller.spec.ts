@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { DEFAULT_NAMESPACE } from './constants/database.js';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { DEFAULT_NAMESPACE } from './constants/database';
 
 describe('AppController', () => {
   let appController: AppController;

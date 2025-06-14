@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Kysely } from 'kysely';
 import { InjectKysely } from 'nestjs-kysely';
-import { DB } from './database/schema.js';
+import { DB } from './database/schema';
 
 @Injectable()
 export class AppService {
