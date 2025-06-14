@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { db } from 'src/database/kysely.js';
+import { db } from 'src/database/kysely';
 import { Users } from 'src/database/schema.js';
 
 @Injectable()

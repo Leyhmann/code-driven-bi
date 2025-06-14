@@ -10,6 +10,7 @@ export class UsersService {
     id: string;
   }> {
     const hashPassword = await bcrypt.hash(user.password, 10);
+    console.log('user added:', user);
     return await this.usersRepo.create({
       ...user,
       password: hashPassword,

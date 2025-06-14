@@ -1,5 +1,5 @@
 import { Kysely, PostgresDialect } from 'kysely';
-import { loadDatabaseConfig } from 'src/utils/load-config.js';
+import { loadDatabaseConfig } from 'src/utils/load-config';
 import pg from 'pg-pool';
 import { DB } from './schema.js';
 
