@@ -9,9 +9,6 @@ import { AppService } from './app.service';
 import { DEFAULT_NAMESPACE } from './constants/database.js';
 import { databaseConfig } from './config/database.config';
 import { UsersModule } from './users/users.module';
-import { UsersCommand } from './users/users.command';
-import { UsersService } from './users/users.service';
-import { UsersRepository } from './users/users.repository';
 
 @Module({
   imports: [
@@ -37,6 +34,6 @@ import { UsersRepository } from './users/users.repository';
     CommandModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UsersCommand, UsersService, UsersRepository],
+  providers: [AppService],
 })
 export class AppModule {}
