@@ -1,6 +1,6 @@
 import { Command, Positional } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
-import { UsersService } from './users.service.js';
+import { UsersService } from './users.service';
 
 @Injectable()
 export class UsersCommand {
@@ -34,9 +34,6 @@ export class UsersCommand {
       email,
       login,
       password,
-      id: '',
-      created_at: '',
-      updated_at: '',
     });
   }
 }

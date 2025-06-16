@@ -6,7 +6,7 @@ import { KyselyModule } from 'nestjs-kysely';
 import { CommandModule } from 'nestjs-command';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DEFAULT_NAMESPACE } from './constants/database.js';
+import { DEFAULT_NAMESPACE } from './constants/database';
 import { databaseConfig } from './config/database.config';
 import { UsersModule } from './users/users.module';
 

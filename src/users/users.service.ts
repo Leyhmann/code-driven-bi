@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from './users.repository.js';
-import { CreateUserDto, UpdateUserDto } from './users.dto.js';
-import * as bcrypt from 'bcrypt';
+import { UsersRepository } from './users.repository';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { UpdateUserDto } from 'src/dto/update-user.dto';
+import { HashPasswordService } from 'src/security/hash-password.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepo: UsersRepository) {}
+  constructor(
+    private readonly usersRepo: UsersRepository,
+    private readonly hashPass: HashPasswordService,
+  ) {}
   async create(user: CreateUserDto): Promise<{
     id: string;
   }> {
-    const hashPassword = await bcrypt.hash(user.password, 10);
-    console.log('user added:', user);
+    const hashPassword = await this.hashPass.hash(user.password, 10);
     return await this.usersRepo.create({
       ...user,
       password: hashPassword,

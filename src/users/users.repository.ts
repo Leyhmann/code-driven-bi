@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { db } from 'src/database/kysely';
-import { Users } from 'src/database/schema.js';
+import { Kysely } from 'kysely';
+import { InjectKysely } from 'nestjs-kysely';
+import { DB, Users } from 'src/database/schema';
 
 @Injectable()
 export class UsersRepository {
+  constructor(@InjectKysely() private readonly db: Kysely<DB>) {}
   async findById(userId: string) {
-    return await db
+    return await this.db
       .selectFrom('users')
       .selectAll()
       .where('id', '=', userId)
       .executeTakeFirst();
   }
-  async create(user: Users): Promise<{ id: string }> {
+  async create(
+    user: Omit<Users, 'id' | 'created_at' | 'updated_at'>,
+  ): Promise<{ id: string }> {
     const { email, login, password } = user;
-    return await db
+    return await this.db
       .insertInto('users')
       .values({
         email,
@@ -23,9 +27,9 @@ export class UsersRepository {
       .returning(['id'])
       .executeTakeFirstOrThrow();
   }
-  async update(user: Users) {
+  async update(user: Omit<Users, 'created_at' | 'updated_at'>) {
     const { email, login, password, id } = user;
-    return await db
+    return await this.db
       .updateTable('users')
       .set({
         email,
@@ -36,6 +40,9 @@ export class UsersRepository {
       .executeTakeFirst();
   }
   async delete(userId: string): Promise<void> {
-    await db.deleteFrom('users').where('id', '=', userId).executeTakeFirst();
+    await this.db
+      .deleteFrom('users')
+      .where('id', '=', userId)
+      .executeTakeFirst();
   }
 }
