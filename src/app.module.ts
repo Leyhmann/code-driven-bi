@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { PostgresDialect } from 'kysely';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import pg from 'pg-pool';
 import { KyselyModule } from 'nestjs-kysely';
-import * as process from 'node:process';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { DEFAULT_NAMESPACE } from './constants/database.js';
-import { databaseConfig } from './config/database.config.js';
+import { CommandModule } from 'nestjs-command';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { DEFAULT_NAMESPACE } from './constants/database';
+import { databaseConfig } from './config/database.config';
 
 @Module({
   imports: [
@@ -15,19 +15,21 @@ import { databaseConfig } from './config/database.config.js';
       isGlobal: true,
       load: [databaseConfig],
     }),
-    KyselyModule.forRoot([
-      {
-        namespace: DEFAULT_NAMESPACE,
+    CommandModule,
+    KyselyModule.forRootAsync({
+      namespace: DEFAULT_NAMESPACE,
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         dialect: new PostgresDialect({
           pool: new pg({
-            host: process.env.HOST ?? 'postgres',
-            user: process.env.DATABASE_USERNAME ?? 'postgres',
-            password: process.env.DATABASE_PASSWORD ?? 'secret',
-            database: process.env.DATABASE_NAME ?? 'cd-bi',
+            host: configService.get<string>('database.host'),
+            user: configService.get<string>('database.username'),
+            password: configService.get<string>('database.password'),
+            database: configService.get<string>('database.database'),
           }),
         }),
-      },
-    ]),
+      }),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
