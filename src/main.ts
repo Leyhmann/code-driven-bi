@@ -1,8 +1,20 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { AppModule } from './app.module.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  if (process.env.ENABLE_SWAGGER === 'true') {
+    const config = new DocumentBuilder()
+      .setTitle(process.env.SWAGGER_TITLE || 'API Title')
+      .setDescription(process.env.SWAGGER_DESCRIPTION || 'API description')
+      .setVersion('0.01')
+      .build();
+    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, documentFactory);
+  }
+
   await app.listen(process.env.PORT ?? 3000);
 }
 // eslint-disable-next-line @typescript-eslint/no-floating-promises

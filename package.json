@@ -30,6 +30,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.2.0",
     "kysely": "^0.28.2",
     "nestjs-command": "^3.1.5",
     "nestjs-kysely": "^1.2.0",
