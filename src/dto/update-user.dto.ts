@@ -1,18 +1,12 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { ColumnType } from 'kysely';
 import { Users } from 'src/database/schema';
+import { CreateUserDto } from './create-user.dto';
 
-export class UpdateUserDto implements Omit<Users, 'created_at' | 'updated_at'> {
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  login: string;
-
-  @IsNotEmpty()
-  @MinLength(6)
-  password: string;
-
+export class UpdateUserDto
+  extends CreateUserDto
+  implements Omit<Users, 'created_at' | 'updated_at'>
+{
   @IsNotEmpty()
   id: ColumnType<string>;
 }

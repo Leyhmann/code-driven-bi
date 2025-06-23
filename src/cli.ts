@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { CommandModule, CommandService } from 'nestjs-command';
 import { AppModule } from './app.module';
+import { LogLevel } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule, {
-    logger: [process.env.LOG_LEVEL], // only errors
+    logger: [(process.env.LOG_LEVEL as LogLevel) || 'error'],
   });
 
   try {

@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { Kysely } from 'kysely';
+import { Kysely, UpdateResult } from 'kysely';
 import { InjectKysely } from 'nestjs-kysely';
+import { DEFAULT_NAMESPACE } from 'src/constants/database';
 import { DB, Users } from 'src/database/schema';
 
 @Injectable()
 export class UsersRepository {
-  constructor(@InjectKysely() private readonly db: Kysely<DB>) {}
+  constructor(
+    @InjectKysely(DEFAULT_NAMESPACE) private readonly db: Kysely<DB>,
+  ) {}
   async findById(userId: string) {
     return await this.db
       .selectFrom('users')
@@ -27,7 +30,9 @@ export class UsersRepository {
       .returning(['id'])
       .executeTakeFirstOrThrow();
   }
-  async update(user: Omit<Users, 'created_at' | 'updated_at'>) {
+  async update(
+    user: Omit<Users, 'created_at' | 'updated_at'>,
+  ): Promise<UpdateResult> {
     const { email, login, password, id } = user;
     return await this.db
       .updateTable('users')
