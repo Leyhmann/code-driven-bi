@@ -9,6 +9,7 @@ export class UsersRepository {
   constructor(
     @InjectKysely(DEFAULT_NAMESPACE) private readonly db: Kysely<DB>,
   ) {}
+
   async findById(userId: string) {
     return await this.db
       .selectFrom('users')
@@ -16,6 +17,7 @@ export class UsersRepository {
       .where('id', '=', userId)
       .executeTakeFirst();
   }
+
   async create(
     user: Omit<Users, 'id' | 'created_at' | 'updated_at'>,
   ): Promise<{ id: string }> {
@@ -30,6 +32,7 @@ export class UsersRepository {
       .returning(['id'])
       .executeTakeFirstOrThrow();
   }
+
   async update(
     user: Omit<Users, 'created_at' | 'updated_at'>,
   ): Promise<UpdateResult> {
@@ -44,6 +47,7 @@ export class UsersRepository {
       .where('id', '=', id.__update__)
       .executeTakeFirst();
   }
+
   async delete(userId: string): Promise<void> {
     await this.db
       .deleteFrom('users')
