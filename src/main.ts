@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module.js';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,7 +16,10 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, documentFactory);
   }
 
+  app.useGlobalPipes(new ValidationPipe());
+
   await app.listen(process.env.PORT ?? 3000);
 }
+
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 bootstrap();

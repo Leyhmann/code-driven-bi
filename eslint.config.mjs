@@ -28,7 +28,14 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      'padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: 'function', next: '*' },
+        { blankLine: 'always', prev: '*', next: 'function' },
+      ],
+      'lines-between-class-members': ['error', 'always'],
     },
   },
 );
