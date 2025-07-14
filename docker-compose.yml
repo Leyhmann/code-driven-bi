@@ -17,6 +17,7 @@ services:
       - DATABASE_USERNAME=${DATABASE_USERNAME}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_NAME=${DATABASE_NAME}
+      - REDIS_URL=${REDIS_URL}
     depends_on:
       - postgres
     networks:
@@ -33,6 +34,13 @@ services:
       - postgres:/var/lib/postgresql/data
     ports:
       - "${DATABASE_PUBLIC_PORT}:5432"
+    networks:
+      - backend
+      
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
     networks:
       - backend
 

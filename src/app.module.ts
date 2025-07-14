@@ -9,6 +9,8 @@ import { AppService } from './app.service';
 import { DEFAULT_NAMESPACE } from './constants/database';
 import { databaseConfig } from './config/database.config';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { RedisModule } from './auth/redis/redis.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
     CommandModule,
+    AuthModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
