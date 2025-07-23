@@ -8,6 +8,8 @@ import { HashPasswordModule } from 'src/security/hash-password.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SessionStrategy } from './guards/session.strategy';
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     HashPasswordModule,
     EventEmitterModule.forRoot(),
   ],
-  providers: [AuthService],
+  providers: [AuthService, SessionStrategy, AuthGuard],
   controllers: [AuthController],
 })
 export class AuthModule {}

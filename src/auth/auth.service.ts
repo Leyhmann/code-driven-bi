@@ -5,6 +5,7 @@ import { UsersService } from 'src/users/users.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { v4 as uuid } from 'uuid';
 import { SessionStore } from './contracts/session-store.interface';
+import { SessionData } from 'src/types/commonTypes';
 
 @Injectable()
 export class AuthService {
@@ -58,17 +59,16 @@ export class AuthService {
         },
       };
     }
-
     if (process.env.AUTH_METHOD === 'session') {
       const sessionId = uuid();
+      const sessionData: SessionData = {
+        user_id: user.id,
+        login: user.login,
+        expires_at: Date.now() + Number(process.env.SESSION_EXPIRES_IN) * 1000,
+      };
       await this.sessionStore.set(
         `session:${sessionId}`,
-        JSON.stringify({
-          user_id: user.id,
-          login: user.login,
-          expires_at:
-            Date.now() + Number(process.env.SESSION_EXPIRES_IN) * 1000,
-        }),
+        JSON.stringify(sessionData),
         Number(process.env.SESSION_EXPIRES_IN),
       );
       this.eventEmitter.emit('user.login', {
@@ -85,6 +85,45 @@ export class AuthService {
           },
         },
       };
+    }
+  }
+
+  async logout(sessionId?: string) {
+    if (process.env.AUTH_METHOD === 'jwt') {
+      this.eventEmitter.emit('user.logout', {
+        timestamp: new Date().toISOString(),
+        action: 'logout',
+      });
+      return {
+        data: {
+          type: 'auth',
+          attributes: {
+            message: 'Logged out successfully',
+          },
+        },
+      };
+    }
+
+    if (process.env.AUTH_METHOD === 'session') {
+      if (sessionId) {
+        await this.sessionStore.delete(`session:${sessionId}`);
+        this.eventEmitter.emit('user.logout', {
+          session_id: sessionId,
+          timestamp: new Date().toISOString(),
+          action: 'logout',
+        });
+        return {
+          data: {
+            type: 'auth',
+            attributes: {
+              message: 'Logged out successfully',
+            },
+          },
+        };
+      }
+      if (!sessionId) {
+        throw new UnauthorizedException('Session ID not provided');
+      }
     }
   }
 }
