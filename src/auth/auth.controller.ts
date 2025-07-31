@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Post,
   Req,
@@ -12,6 +14,7 @@ import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import { LoginDto } from 'src/dto/login.dto';
+import { generateCsrfToken } from './protection/csrf.middleware';
 
 @Controller('api/auth')
 @ApiTags('Auth')
@@ -58,9 +61,28 @@ export class AuthController {
     status: 401,
     description: 'Неверные учетные данные',
   })
-  async login(@Body() loginDto: LoginDto, @Res() response: Response) {
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res() response: Response,
+    @Req() request: Request,
+  ) {
     const { login, password } = loginDto;
-    const result = await this.authService.login(password, login);
+    const ip = request.ip || request.connection.remoteAddress;
+    if (!ip) {
+      throw new HttpException(
+        {
+          errors: [
+            {
+              status: '400',
+              title: 'Bad Request',
+              detail: 'Unable to determine client IP address.',
+            },
+          ],
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const result = await this.authService.login(password, login, ip);
 
     if (
       this.configService.get<'jwt' | 'session'>('AUTH_METHOD', 'jwt') ===
@@ -138,5 +160,27 @@ export class AuthController {
 
     const result = await this.authService.logout(sessionId);
     return response.json(result);
+  }
+
+  @Get('csrf-token')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get CSRF token' })
+  @ApiResponse({
+    status: 200,
+    description: 'CSRF token retrieved successfully',
+    schema: {
+      example: {
+        data: {
+          type: 'csrf',
+          attributes: {
+            csrf_token: 'your_csrf_token_here',
+          },
+        },
+      },
+    },
+  })
+  csrfToken(@Req() request: Request, @Res() response: Response) {
+    const csrfToken = generateCsrfToken(request, response);
+    return response.json({ csrfToken });
   }
 }

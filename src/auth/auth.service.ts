@@ -18,7 +18,7 @@ export class AuthService {
     private readonly sessionStore: SessionStore,
   ) {}
 
-  async login(password: string, login: string) {
+  async login(password: string, login: string, ip: string) {
     const user = await this.usersService.findByLogin(login);
 
     if (
@@ -77,6 +77,9 @@ export class AuthService {
         action: 'login',
         details: { method: 'session' },
       });
+
+      // Clear brute force attempts on successful login
+      await this.sessionStore.delete(`login_attempts:${ip}`);
       return {
         data: {
           type: 'auth',

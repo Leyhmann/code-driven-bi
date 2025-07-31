@@ -3,10 +3,13 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module.js';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import { conditionalCsrfProtection } from './auth/protection/csrf.middleware.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
+
+  app.use(conditionalCsrfProtection);
 
   if (process.env.ENABLE_SWAGGER === 'true') {
     const config = new DocumentBuilder()

@@ -27,3 +27,5 @@ npm run migrate:rollback
 ```bash
 npx nestjs-command create:user <email> <login> <password>
 ```
+
+## Auth

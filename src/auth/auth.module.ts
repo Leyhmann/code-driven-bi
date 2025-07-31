@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersModule } from 'src/users/users.module';
 import { PassportModule } from '@nestjs/passport';
@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SessionStrategy } from './guards/session.strategy';
 import { AuthGuard } from './guards/auth.guard';
+import { BruteForceProtectionMiddleware } from './protection/brute-force-protection.middleware';
 
 @Module({
   imports: [
@@ -32,4 +33,8 @@ import { AuthGuard } from './guards/auth.guard';
   providers: [AuthService, SessionStrategy, AuthGuard],
   controllers: [AuthController],
 })
-export class AuthModule {}
+export class AuthModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(BruteForceProtectionMiddleware).forRoutes('api/auth/login');
+  }
+}
