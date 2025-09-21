@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 export class RedisService {
   private client: Redis;
 
-  constructor(private configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.client = new Redis(
       this.configService.get<string>('REDIS_URL', 'redis://localhost:6379'),
     );

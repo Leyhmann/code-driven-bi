@@ -36,6 +36,10 @@ export default tseslint.config(
         { blankLine: 'always', prev: '*', next: 'function' },
       ],
       'lines-between-class-members': ['error', 'always'],
+      // отключаем typescript-правило в тестах
+      '@typescript-eslint/unbound-method': 'off',
+      // включаем jest-версию правила
+      'jest/unbound-method': 'error',
     },
   },
 );

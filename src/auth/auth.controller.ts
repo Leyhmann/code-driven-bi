@@ -24,6 +24,14 @@ export class AuthController {
     private readonly configService: ConfigService,
   ) {}
 
+  /**
+   * Аутентификация пользователя.
+   * @param loginDto Данные для входа.
+   * @param response Ответ Express.
+   * @param request Запрос Express.
+   * @returns JWT или session_id.
+   * @throws {HttpException} Если не удалось определить IP.
+   */
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login user' })
@@ -106,6 +114,12 @@ export class AuthController {
     return response.json(result);
   }
 
+  /**
+   * Выход пользователя из системы.
+   * @param request Запрос Express.
+   * @param response Ответ Express.
+   * @returns Сообщение об успешном выходе.
+   */
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Logout user' })
@@ -162,6 +176,12 @@ export class AuthController {
     return response.json(result);
   }
 
+  /**
+   * Получение CSRF-токена.
+   * @param request Запрос Express.
+   * @param response Ответ Express.
+   * @returns CSRF-токен.
+   */
   @Get('csrf-token')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get CSRF token' })
