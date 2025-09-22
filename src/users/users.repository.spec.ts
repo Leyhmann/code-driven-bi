@@ -7,6 +7,7 @@ import { DEFAULT_NAMESPACE } from 'src/constants/database';
 describe('UsersRepositoryService', () => {
   let service: UsersRepository;
   let dbMock: Partial<Kysely<DB>>;
+  let module: TestingModule;
 
   beforeEach(async () => {
     const user = {
@@ -40,7 +41,7 @@ describe('UsersRepositoryService', () => {
       deleteFrom: jest.fn().mockReturnValue(deleteMock),
     };
 
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         UsersRepository,
         {
@@ -90,5 +91,9 @@ describe('UsersRepositoryService', () => {
   it('should delete user', async () => {
     await service.delete('1');
     expect(dbMock.deleteFrom).toHaveBeenCalledWith('users');
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 });

@@ -32,4 +32,12 @@ export class RedisService {
   async del(key: string): Promise<void> {
     await this.client.del(key);
   }
+
+  async disconnect(): Promise<void> {
+    await this.client.quit();
+  }
+
+  async onModuleDestroy() {
+    await this.disconnect();
+  }
 }

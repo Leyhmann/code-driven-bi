@@ -64,10 +64,6 @@ describe('AuthController', () => {
     controller = module.get<AuthController>(AuthController);
   });
 
-  // jest.mock('./protection/csrf.middleware', () => ({
-  //   generateCsrfToken: jest.fn(() => 'mocked-csrf-token'),
-  // }));
-
   describe('login', () => {
     it('should login with JWT and return token', async () => {
       (configService.get! as jest.Mock).mockImplementation((key, def) => {

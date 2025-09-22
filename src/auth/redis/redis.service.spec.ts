@@ -4,9 +4,10 @@ import { ConfigModule } from '@nestjs/config';
 
 describe('RedisService', () => {
   let service: RedisService;
+  let module: TestingModule;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       imports: [ConfigModule.forRoot({ isGlobal: true })],
       providers: [RedisService],
     }).compile();
@@ -16,5 +17,10 @@ describe('RedisService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  afterAll(async () => {
+    await service.onModuleDestroy();
+    await module.close();
   });
 });
