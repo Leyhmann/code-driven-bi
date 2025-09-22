@@ -18,6 +18,14 @@ export class UsersRepository {
       .executeTakeFirst();
   }
 
+  async findByLogin(login: string) {
+    return await this.db
+      .selectFrom('users')
+      .selectAll()
+      .where('login', '=', login)
+      .executeTakeFirst();
+  }
+
   async create(
     user: Omit<Users, 'id' | 'created_at' | 'updated_at'>,
   ): Promise<{ id: string }> {

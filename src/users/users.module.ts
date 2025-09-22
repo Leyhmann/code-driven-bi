@@ -6,5 +6,6 @@ import { HashPasswordService } from 'src/security/hash-password.service';
 
 @Module({
   providers: [UsersRepository, UsersService, UsersCommand, HashPasswordService],
+  exports: [UsersService],
 })
 export class UsersModule {}

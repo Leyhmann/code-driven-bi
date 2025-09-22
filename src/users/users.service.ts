@@ -34,4 +34,12 @@ export class UsersService {
   async delete(userId: string) {
     await this.usersRepo.delete(userId);
   }
+
+  async findById(userId: string) {
+    return await this.usersRepo.findById(userId);
+  }
+
+  async findByLogin(login: string) {
+    return await this.usersRepo.findByLogin(login);
+  }
 }
